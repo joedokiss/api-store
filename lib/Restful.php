@@ -78,7 +78,7 @@ class Restful{
         $raw = file_get_contents('php://input');
 
         if(empty($raw)){
-            throw new Exception('The request params are invalid', 400);
+            throw new \Exception('The request params are invalid', 400);
         }
 
         return json_decode($raw, true);
@@ -119,7 +119,7 @@ class Restful{
     {
     	try {
     		if (empty($this->_id)) {
-        		throw new Exception('ID is required', 400);
+        		throw new \Exception('ID is required', 400);
         	}
 
             $requestBody = $this->_getBodyParams();
@@ -128,7 +128,7 @@ class Restful{
 	    	$allowedValues = ['true', 'false'];
 
 	    	if (empty($withChildren) || !in_array($withChildren, $allowedValues)) {
-	    		throw new Exception('Children value is invalid', 400);
+	    		throw new \Exception('Children value is invalid', 400);
 	    	}
 
             return $this->_tree->view($this->_id, $withChildren);
@@ -139,9 +139,9 @@ class Restful{
             
             if($errorCode < 100){
                 if ($errorCode == ErrorCode::NODE_NOT_FOUND){
-                    throw new Exception($errorMsg, 404);
+                    throw new \Exception($errorMsg, 404);
                 }else {
-                    throw new Exception($errorMsg, 400);
+                    throw new \Exception($errorMsg, 400);
                 }
             }else {
                 throw $e;
@@ -156,11 +156,11 @@ class Restful{
     {
         try{
         	if ($this->_id == 0) {
-        		throw new Exception('Root node cannot be deleted', 400);
+        		throw new \Exception('Root node cannot be deleted', 400);
         	}
 
         	if (empty($this->_id)) {
-        		throw new Exception('ID is required', 400);
+        		throw new \Exception('ID is required', 400);
         	}
 
         	$result = $this->_tree->delete($this->_id);
@@ -172,9 +172,9 @@ class Restful{
             
             if($errorCode < 100){
                 if ($errorCode == ErrorCode::NODE_NOT_FOUND){
-                    throw new Exception($errorMsg, 404);
+                    throw new \Exception($errorMsg, 404);
                 }else {
-                    throw new Exception($errorMsg, 400);
+                    throw new \Exception($errorMsg, 400);
                 }
             }else {
                 throw $e;
@@ -212,9 +212,9 @@ class Restful{
             
             if($errorCode < 100){
                 if ($errorCode == ErrorCode::NODE_NOT_FOUND){
-                    throw new Exception($errorMsg, 404);
+                    throw new \Exception($errorMsg, 404);
                 }else {
-                    throw new Exception($errorMsg, 400);
+                    throw new \Exception($errorMsg, 400);
                 }
             }else {
                 throw $e;
@@ -227,22 +227,22 @@ class Restful{
      */
     private function _handleBranchCreate()
     {
-    	//retrieve posted parameters
-    	$body = $this->_getBodyParams();
-        
-        if(empty($body['parent_id'])){
-            throw new Exception('The parent ID is required', 400);
-        }
-        
-        if(empty($body['store_name'])){
-            throw new Exception('The store name is required', 400);
-        }
-
-        if(empty($body['store_state'])){
-            throw new Exception('The store state is required', 400);
-        }
-        
         try{
+        	//retrieve posted parameters
+	    	$body = $this->_getBodyParams();
+
+	        if(empty($body['parent_id'])){
+	            throw new \Exception('The parent ID is required', 400);
+	        }
+	        
+	        if(empty($body['store_name'])){
+	            throw new \Exception('The store name is required', 400);
+	        }
+
+	        if(empty($body['store_state'])){
+	            throw new \Exception('The store state is required', 400);
+	        }
+
             $request = [
             	'parent_id'   => Filter::trimNonNumeric($body['parent_id']),
             	'store_name'  => Filter::filterString($body['store_name']),
@@ -262,9 +262,9 @@ class Restful{
                     ErrorCode::STORE_NAME_IS_REQUIRED,
                     ErrorCode::STORE_STATE_IS_REQUIRED                
                 ])){
-                    throw new Exception($e->getMessage(), 400);
+                    throw new \Exception($e->getMessage(), 400);
                 }
-                throw new Exception($e->getMessage(), 500);
+                throw new \Exception($e->getMessage(), 500);
         }
     }
     
@@ -284,9 +284,9 @@ class Restful{
                     ErrorCode::USERNAME_OR_PASSWORD_INVALID, 
                     ErrorCode::PASSWORD_CANNOT_EMPTY
                 ])){
-                throw new Exception($e->getMessage(), 400);
+                throw new \Exception($e->getMessage(), 400);
             }
-            throw new Exception($e->getMessage(), 500);
+            throw new \Exception($e->getMessage(), 500);
         }
         
     }
@@ -320,7 +320,7 @@ class Restful{
         $this->_requestMethod = $_SERVER['REQUEST_METHOD'];
         
         if(!in_array($this->_requestMethod, $this->_allowedRequestMethods)){
-            throw new Exception('The request method is not allowed', 405);
+            throw new \Exception('The request method is not allowed', 405);
         }
     }
     
@@ -340,7 +340,7 @@ class Restful{
             $this->_resourceName = $params[1];
             
             if(!in_array($this->_resourceName, $this->_allowedResrouces)){
-                throw new Exception('The requested resource is not allowed', 400);
+                throw new \Exception('The requested resource is not allowed', 400);
             }
         }
         

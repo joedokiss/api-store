@@ -24,7 +24,7 @@ class Filter
 	}
 
 	//removes all non-numeric characters
-	public static function trimNonNumeric($intput){
+	public static function trimNonNumeric($input){
 		$output = preg_replace( '/[^0-9]/', '', $input);
 
 		return ($output == '') ? false : true;
