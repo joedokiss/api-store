@@ -1,6 +1,7 @@
 ## 1. About this program:
-> the tree structure (see snapshot as example, which is used in this demo application) 
-will be essentially converted into the array structure,
+> the tree structure (see snapshot 1 as example, which is used in this demo application) 
+will be essentially saved as the array structure (eg. array $nodes),
+and the tree will be built as (see snapshot 2 as example)
 ```
 $nodes = [
 	['id' => 1,  'parent_id' => 0, 'store_name' => 'A', 'store_state' => 'NSW'],
@@ -17,7 +18,11 @@ $nodes = [
 	['id' => 12, 'parent_id' => 7, 'store_name' => 'L', 'store_state' => 'WA']
 ];
 ```
+###### snapshot 1
 ![tree_structure](https://user-images.githubusercontent.com/39091872/51833525-ce2bb100-234b-11e9-89b5-67959f8c53ed.png)
+
+###### snapshot 2
+![2019-01-29_9-04-35](https://user-images.githubusercontent.com/39091872/51869564-090e0300-23a5-11e9-83a7-aa2f4b9d1c0b.png)
 
 * Each element in the $nodes array stands for a store branch, and has a 'parent_id' indicating node's parent, 
 which is used to organise the tree structure.
