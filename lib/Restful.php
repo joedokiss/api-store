@@ -194,10 +194,10 @@ class Restful{
 
             $body = $this->_getBodyParams();
 
-            $parentId   = Filter::trimNonNumeric($body['parent_id']) ?? $node['parent_id'];
-            $storeName  = Filter::filterString($body['store_name']) ?? $node['store_name'];
-            $storeState = Filter::filterString($body['store_state']) ?? $node['store_state'];
-            
+            $parentId   = $body['parent_id'] ?? $node['parent_id'];
+            $storeName  = $body['store_name'] ?? $node['store_name'];
+            $storeState = $body['store_state'] ?? $node['store_state'];
+
             //no update incurred
             if ($body['parent_id'] == $node['parent_id'] && $body['store_name'] == $node['store_name'] && $body['store_state'] == $node['store_state'])
             {

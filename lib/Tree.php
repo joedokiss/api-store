@@ -94,21 +94,21 @@ class Tree
 	public function create(array $request)
 	{
 		if(empty($request['parent_id'])){
-            throw new Exception("Parent ID is required", ErrorCode::PARENT_ID_IS_REQUIRED);
+            throw new \Exception("Parent ID is required", ErrorCode::PARENT_ID_IS_REQUIRED);
         }
         
         if(empty($request['store_name'])){
-            throw new Exception("Store name is required", ErrorCode::STORE_NAME_IS_REQUIRED);
+            throw new \Exception("Store name is required", ErrorCode::STORE_NAME_IS_REQUIRED);
         }
 
         if(empty($request['store_state'])){
-            throw new Exception("Store state is required", ErrorCode::STORE_STATE_IS_REQUIRED);
+            throw new \Exception("Store state is required", ErrorCode::STORE_STATE_IS_REQUIRED);
         }
 
         //store name shall be unique
         $searchStoreName = array_search($request['store_name'], array_column($this->nodes, 'store_name'));
         if ($searchStoreName !== false) {
-        	throw new Exception("Store name is existed", ErrorCode::STORE_NAME_IS_EXISTED);
+        	throw new \Exception("Store name is existed", ErrorCode::STORE_NAME_IS_EXISTED);
         }
         
         $query = "INSERT INTO `branches` (`parent_id`,`store_name`,`store_state`) VALUES (:parent_id,:store_name,:store_state)";      
@@ -120,7 +120,7 @@ class Tree
         $stmt->bindParam(':store_state',$request['store_state']);
         
         if(!$stmt->execute()){
-            throw new Exception('New branch creation failed', ErrorCode::BRANCH_CREATE_FAIL);
+            throw new \Exception('New branch creation failed', ErrorCode::BRANCH_CREATE_FAIL);
         }
 
         $lastInsertId = $this->_db->lastInsertId();
@@ -140,7 +140,7 @@ class Tree
 	public function update(array $node, array $request)
 	{
 		if ($node['id'] == $this->root) {
-			throw new Exception('Root node cannot be updated', ErrorCode::ROOT_CANNOT_BE_UPDATED);
+			throw new \Exception('Root node cannot be updated', ErrorCode::ROOT_CANNOT_BE_UPDATED);
 		}
 
         $query = "UPDATE `branches` 
@@ -155,7 +155,7 @@ class Tree
         $stmt->bindParam(':node_id',    $node['id']);
 
         if(!$stmt->execute()){
-            throw new Exception('Branch update failed', ErrorCode::BRANCH_UPDATE_FAIL);
+            throw new \Exception('Branch update failed', ErrorCode::BRANCH_UPDATE_FAIL);
         }
 
         $this->refreshNodesAndTree();
@@ -173,7 +173,7 @@ class Tree
 	public function delete(int $nodeId)
 	{
 		if ($nodeId == $this->root) {
-			throw new Exception('Root node cannot be deleted', ErrorCode::ROOT_CANNOT_BE_DELETED);
+			throw new \Exception('Root node cannot be deleted', ErrorCode::ROOT_CANNOT_BE_DELETED);
 		}
 
 		$node = $this->viewNode($nodeId);
@@ -212,7 +212,7 @@ class Tree
 		}
 
         if($stmt->execute() === false){
-            throw new Exception('Branch deletion failed', ErrorCode::BRANCH_DELETE_FAIL);
+            throw new \Exception('Branch deletion failed', ErrorCode::BRANCH_DELETE_FAIL);
         }
 
 		$this->refreshNodesAndTree();
@@ -238,7 +238,7 @@ class Tree
         $node = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if(empty($node)){
-            throw new Exception('Node is not existed', ErrorCode::NODE_NOT_FOUND);
+            throw new \Exception('Node is not existed', ErrorCode::NODE_NOT_FOUND);
         }
         
         return $node;
