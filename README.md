@@ -32,6 +32,7 @@ the stronger approach can be adopted in the real word, eg. OAuth2
 * the API is tested via Postman app.
 * the SQL statements (tables - "users" and "branches") can be found in 
 [SQL repository](https://github.com/joedokiss/api-store/tree/master/sql)
+* testing username/password: admin
 
 ###### Steps:
 * move to the folder '/api-store' after clone the repository
@@ -54,16 +55,32 @@ eg. pass the body parameters like
 ```
 #### (2) update a store branch
 #### (4) move a store branch (along with all of its children) to a different store branch
-```
-URI: /restful/branches/{id}
-Action: update
-```
 ###### NOTE:
-```
 combine both (2) and (4) in one place, because as long as the node's "parent_id" is changed, 
 all of its children will be moved, which can be considered as part of "update", 
 in case the "parent_id" remains the same, the node will not be moved, the other information can be updated instead.
+
 ```
+URI: /restful/branches/{id}
+Method: PUT
+Action: update
+```
+eg. this sample will move the node A and all its children under C 
+```
+/restful/branches/1
+{
+ "parent_id":3
+}
+```
+eg. this sample will update node A's details
+```
+/restful/branches/1
+{
+ "store_name":"AA",
+ "store_state":"QLD"
+}
+```
+
 
 #### (3) delete a store branch along with all of its children
 ```
