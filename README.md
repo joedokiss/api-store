@@ -1,4 +1,6 @@
 ## 1. About this program:
+> the program is built by using native PHP other than any third party library
+
 > the tree structure (see snapshot 1 as example, which is used in this demo application) 
 will be essentially saved as the array structure (eg. array $nodes),
 and the tree will be built as (see snapshot 2 as example)
@@ -26,12 +28,18 @@ $nodes = [
 
 * Each element in the $nodes array stands for a store branch, and has a 'parent_id' indicating node's parent, 
 which is used to organise the tree structure.
-* Each element is saved into the database as a row.
+* Each element in the $nodes array is saved into the database as a row.
+* after the tree is built, each element will have a key "children" to store the children nodes (if any).
 
-## 2. How the demo works:
+## 2. About codes:
+* the core scripts are "/lib/Restful.php" and "/lib/Tree.php".
+* the "restful.php" is the main entrance to respond the API call, which will take care of the API process (eg. determine the HTTP method and set up the requested resource, and so forth) and call the corresponding functionalities.
+* the "Tree.php" is contiaining all logics in relation to the tree structure, the are two properties $this->nodes (save the nodes array in snapshot 1 from the database) and $this->tree (save the generated tree in shanpshot 2 based on $this->nodes).
+
+## 3. How the demo works:
 ###### NOTE:
 * for demonstration only, this application is using the basic HTTP authentication to authenticate users, 
-the stronger approach can be adopted in the real word, eg. OAuth2
+the better solution can be adopted in the real word, eg. OAuth2
 * the demo only supports "logon" without "register" feature.
 * the authentication will be performed prior to run through the API.
 * the API is tested via Postman app.
@@ -86,20 +94,53 @@ eg. this sample will update node A's details
 }
 ```
 
-
 #### (3) delete a store branch along with all of its children
 ```
 URI: /restful/branches/{id}
+Method: DELETE
 Action: delete
+```
+eg. this sample will delete node B and all its children (if any)
+```
+/restful/branches/3
 ```
 #### (5) view all store branches with all of their children
 ```
 URI: /restful/branches
-Action: index
+Method: GET
+```
+eg. 
+```
+/restful/branches
 ```
 #### (6) view one specific store branch with all of its children
 #### (7) view one specific store branch without any children
 ```
 URI: /restful/branches/{id}
+Method: GET
 Action: view
+```
+eg. it will outline the subtree (node B as root including all its children, if any) 
+```
+/restful/branches/2
+{
+  "children":"true"
+}
+```
+
+> NOTE: with/without children can be controlled by passing parameter "children" ("true" is with children, "false" is "without children")
+
+eg. this example tends to view store (node A) and assuming it has no children, in which case, the API will respond an array having all available nodes without the children 
+```
+/restful/branches/1
+{
+  "children":"false"
+}
+```
+## 4. Notes to unit test:
+the last tree test cases are dependent because they were testing the real actions other than leveraging the mocking any more, you may consider to test those one by one (roll back the database to original status with raw data every time) other than at once, but the following test sequence will work anyway.
+```
+* test_create_node_M_as_A_child
+* test_move_A_branch_as_C_child
+* test_delete_C_branch_and_children
 ```
