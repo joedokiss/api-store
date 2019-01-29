@@ -25,9 +25,14 @@ class Filter
 
 	//removes all non-numeric characters
 	public static function trimNonNumeric($input){
+
+		if (empty($input)) {
+			return null;
+		}
+
 		$output = preg_replace( '/[^0-9]/', '', $input);
 
-		return ($output == '') ? false : true;
+		return $output;
 	}
 
 }

@@ -1,7 +1,5 @@
 <?php
-
-require_once __DIR__.'/../lib/Restful.php';
-require_once __DIR__.'/../lib/DB.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Lib\DB;
 use Lib\Restful;

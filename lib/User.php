@@ -1,9 +1,6 @@
 <?php
 namespace Lib;
 
-require_once __DIR__.'/ErrorCode.php';
-require_once __DIR__.'/Config.php';
-
 use Lib\ErrorCode;
 use Lib\Config;
 use \PDO;

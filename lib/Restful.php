@@ -1,12 +1,6 @@
 <?php
 namespace Lib;
 
-require_once __DIR__.'/User.php';
-require_once __DIR__.'/Tree.php';
-require_once __DIR__.'/DB.php';
-require_once __DIR__.'/ErrorCode.php';
-require_once __DIR__.'/Filter.php';
-
 use Lib\Filter;
 use Lib\DB;
 use Lib\ErrorCode;
@@ -155,12 +149,8 @@ class Restful{
     private function _handleBranchDelete()
     {
         try{
-        	if ($this->_id == 0) {
-        		throw new \Exception('Root node cannot be deleted', 400);
-        	}
-
-        	if (empty($this->_id)) {
-        		throw new \Exception('ID is required', 400);
+        	if ($this->_id == 0 || empty($this->_id)) {
+        		throw new \Exception('ID is invalid', 400);
         	}
 
         	$result = $this->_tree->delete($this->_id);
